@@ -25,8 +25,16 @@ steps:
 
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/dist' # Update this path based on your Angular build output
       includeRootFolder: false
+      archiveType: 'zip'
       archiveFile: '$(Build.ArtifactStagingDirectory)/angular-app.zip'
       replaceExistingArchive: true
     displayName: 'Compress artifact as .zip'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'compressed-artifact'
+      publishLocation: 'Container'
+    displayName: 'Publish compressed artifact'
