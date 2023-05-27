@@ -13,21 +13,13 @@ steps:
   - script: |
       npm install -g @angular/cli
       npm install
-      ng build
+      ng build --prod
     displayName: 'npm install and build'
-
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.SourcesDirectory)/dist' # Update this path based on your Angular build output
-      ArtifactName: 'angular-app'
-      publishLocation: 'Container'
-    displayName: 'Publish build artifact'
 
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/dist' # Update this path based on your Angular build output
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist' # Update this path based on your Angular build output
       includeRootFolder: false
-      archiveType: 'zip'
       archiveFile: '$(Build.ArtifactStagingDirectory)/angular-app.zip'
       replaceExistingArchive: true
     displayName: 'Compress artifact as .zip'
@@ -36,5 +28,4 @@ steps:
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'compressed-artifact'
-      publishLocation: 'Container'
     displayName: 'Publish compressed artifact'
